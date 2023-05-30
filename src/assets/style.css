@@ -1,0 +1,82 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.shopping-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 200px;
+}
+.list-item{
+  background-color: #ED645C;
+  padding: 15px;
+  width: 300px;
+}
+.item-add-button{
+ 
+  background-color: #F8C3BD;
+  color: #ED645C;
+  width: 15%;
+  padding: 10px;
+  border:  1px solid #ED645C;
+}
+.item-cart{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid gray;
+  padding:10px 0;
+  color: rgb(227, 230, 233);
+}
+.cart-count button{
+  padding: 5px;
+  border: 0;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  width: 70px;
+}
+.total-cart{
+  text-align: end;
+  color: rgb(227, 230, 233);
+  margin-top: 15px;
+}
+.item-number{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.item-number input{
+  margin-right: 10px;
+}
+.add-item-field{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.add-item-field input{
+  width: 80%;
+  padding: 9px;
+  background-color: #F8C3BD;
+  border: 0px;
+  font-size: 16px;
+  color: #000000;
+}
+.add-item-field input:focus{
+  outline: none;
+}
+.add-item-field input::placeholder{
+  font-size: 18px;
+  color: #ED645C;
+}
+.decrease,.increase,.cart-count-value{
+color: #ED645C;
+}
+.item-number input[type="checkbox"]:checked + label {
+  text-decoration: line-through;
+}
+.round input[type="checkbox"]{
+ width: 50px;
+}

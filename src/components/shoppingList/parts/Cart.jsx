@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import { FaChevronRight } from "react-icons/fa";
 
-const Cart = ({ item, setTotalCartCount }) => {
+const Cart = ({ 
+  item,
+  setTotalCartCount 
+  }) => {
   const [cartCount, setCartCount] = useState(0);
   console.log(cartCount);
 

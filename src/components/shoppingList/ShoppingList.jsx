@@ -8,13 +8,14 @@ const ShoppingList = () => {
   const [itemAdd, setItemAdd] = useState("");
 
   const itemCartAdd = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (itemAdd.length === 0 || listItems.includes(itemAdd)) {
       return alert("Your Order duplicate or empty!");
     }
     setListItems([...listItems, itemAdd]);
-    setItemAdd("")
+    setItemAdd("");
   };
+
   console.log("total count =", totalCartCount, "item add =", itemAdd);
 
   return (
@@ -30,7 +31,9 @@ const ShoppingList = () => {
           onChange={(e) => setItemAdd(e.target.value)}
           value={itemAdd}
         />
-        <button type="submit" className="item-add-button"><FaPlus/></button>
+        <button type="submit" className="item-add-button">
+          <FaPlus />
+        </button>
       </form>
 
       {listItems.map((item, index) => (

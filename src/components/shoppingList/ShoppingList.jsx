@@ -20,8 +20,6 @@ const ShoppingList = () => {
 
   return (
     <div className="list-item">
-      {/* <button className='item-add-button' onClick={itemCartAdd}><div >Add an item...</div> <div>+</div></button> */}
-
       <form onSubmit={itemCartAdd} action="" className="add-item-field">
         <input
           type="text"
@@ -39,7 +37,9 @@ const ShoppingList = () => {
       {listItems.map((item, index) => (
         <Cart key={index} item={item} setTotalCartCount={setTotalCartCount} />
       ))}
-      <div className="total-cart">Total : {totalCartCount}</div>
+      <div className="total-cart">
+        Total : {totalCartCount}
+      </div>
     </div>
   );
 };

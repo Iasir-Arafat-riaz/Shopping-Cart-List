@@ -9,18 +9,23 @@ const ShoppingList = () => {
 
   const itemCartAdd = (e) => {
     e.preventDefault();
-    if (itemAdd.length === 0 || listItems.includes(itemAdd)) {
+    if (itemAdd.length === 0 || listItems.find(i => i.itemName === itemAdd)) {
       return alert("Your Order duplicate or empty!");
     }
-    setListItems([...listItems, itemAdd]);
+    setListItems([...listItems, { itemName: itemAdd, count: 0, isChecked: false, uniqId: Math.floor(Math.random() * 1000000) }]);
     setItemAdd("");
   };
 
   console.log("total count =", totalCartCount, "item add =", itemAdd);
+  console.log(listItems);
 
   return (
     <div className="list-item">
-      <form onSubmit={itemCartAdd} action="" className="add-item-field">
+      <form
+        onSubmit={itemCartAdd}
+        action=""
+        className="add-item-field"
+      >
         <input
           type="text"
           name=""
@@ -29,14 +34,18 @@ const ShoppingList = () => {
           onChange={(e) => setItemAdd(e.target.value)}
           value={itemAdd}
         />
-        <button type="submit" className="item-add-button">
+        <button
+          type="submit"
+          className="item-add-button"
+        >
           <FaPlus />
         </button>
       </form>
 
       {listItems.map((item, index) => (
-        <Cart key={index} item={item} setTotalCartCount={setTotalCartCount} />
+        <Cart key={index} item={item} setListItems={setListItems} setTotalCartCount={setTotalCartCount} listItems={listItems} />
       ))}
+
       <div className="total-cart">
         Total : {totalCartCount}
       </div>

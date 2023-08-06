@@ -1,18 +1,25 @@
 import React, { useState } from "react";
 import Cart from "./parts/Cart";
 import { FaPlus } from "react-icons/fa";
+import { type } from "os";
+import { TypeListItems } from "../../types/commonTypes";
 
+
+type TypeTotalCount = number;
+type TypeItemAdd=string;
 const ShoppingList = () => {
-  const [listItems, setListItems] = useState([]);
-  const [totalCartCount, setTotalCartCount] = useState(0);
-  const [itemAdd, setItemAdd] = useState("");
+  
+  const [listItems, setListItems] = useState<TypeListItems[]>([]);
+  const [totalCartCount, setTotalCartCount] = useState<TypeTotalCount>(0);
+  const [itemAdd, setItemAdd] = useState<TypeItemAdd>("");
+  
 
-  const itemCartAdd = (e) => {
+  const itemCartAdd = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (itemAdd.length === 0 || listItems.find(i => i.itemName === itemAdd)) {
       return alert("Your Order duplicate or empty!");
     }
-    setListItems([...listItems, { itemName: itemAdd, count: 0, isChecked: false, uniqId: Math.floor(Math.random() * 1000000) }]);
+    setListItems  ([...listItems, { itemName: itemAdd, count: 0, isChecked: false, uniqId: Math.floor(Math.random() * 1000000) }]);
     setItemAdd("");
   };
 

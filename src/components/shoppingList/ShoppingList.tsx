@@ -2,24 +2,21 @@ import React, { useState } from "react";
 import Cart from "./parts/Cart";
 import { FaPlus } from "react-icons/fa";
 import { type } from "os";
-import { TypeListItems } from "../../types/commonTypes";
+import { TypeItemAdd, TypeListItems, TypeTotalCount } from "../../types/commonTypes";
 
-
-type TypeTotalCount = number;
-type TypeItemAdd=string;
 const ShoppingList = () => {
-  
+
   const [listItems, setListItems] = useState<TypeListItems[]>([]);
   const [totalCartCount, setTotalCartCount] = useState<TypeTotalCount>(0);
   const [itemAdd, setItemAdd] = useState<TypeItemAdd>("");
-  
+
 
   const itemCartAdd = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (itemAdd.length === 0 || listItems.find(i => i.itemName === itemAdd)) {
       return alert("Your Order duplicate or empty!");
     }
-    setListItems  ([...listItems, { itemName: itemAdd, count: 0, isChecked: false, uniqId: Math.floor(Math.random() * 1000000) }]);
+    setListItems([...listItems, { itemName: itemAdd, count: 0, isChecked: false, uniqId: Math.floor(Math.random() * 1000000) }]);
     setItemAdd("");
   };
 
@@ -50,7 +47,12 @@ const ShoppingList = () => {
       </form>
 
       {listItems.map((item, index) => (
-        <Cart key={index} item={item} setListItems={setListItems} setTotalCartCount={setTotalCartCount} listItems={listItems} />
+        <Cart
+          key={index}
+          item={item}
+          setListItems={setListItems}
+          setTotalCartCount={setTotalCartCount}
+          listItems={listItems} />
       ))}
 
       <div className="total-cart">

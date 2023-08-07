@@ -1,40 +1,69 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import { FaChevronRight } from "react-icons/fa";
 import { TypeChildProps } from "../../../types/commonTypes";
 
 
-type TypeItemName = {
-  itemName: string;
-  count: number;
-  isChecked: boolean;
-  uniqId: number;
-};
 const Cart = ({ item, listItems, setListItems, setTotalCartCount }: TypeChildProps) => {
 
-  console.log(item.isChecked);
+  const handleChange = (id: number) => {
 
-  const handleChange = () => {
-    item.isChecked = !item.isChecked;
+    const updateCheckbox = listItems.map(itm => {
 
-    console.log(item.isChecked,"clicked checkbox");
+      if (itm.uniqId === id) {
+        if (!itm.isChecked) {
+          // console.log(!itm.isChecked);
+          setTotalCartCount(pre => pre - itm.count)
+        }
+        else if (itm.isChecked) {
+          setTotalCartCount(pre => pre + itm.count)
+        }
+        // console.log(itm);
+        return { ...itm, isChecked: !itm.isChecked }
 
-    if (item.isChecked) {
-      setTotalCartCount(pre => pre - item.count)
-    }
-    else if (!item.isChecked) {
-      setTotalCartCount(pre => pre + item.count)
-    }
+      }
+      // console.log(itm);
+      return itm
+
+    })
+
+    setListItems(updateCheckbox)
+    console.log(updateCheckbox);
+
   }
+
+  const increaseHandler = (uid: number) => {
+    const incCreaseUpdate = listItems.map(itm => {
+      if (itm.uniqId === uid && !itm.isChecked) {
+        console.log(itm.uniqId);
+        setTotalCartCount((pre) => pre + 1);
+        return { ...itm, count: itm.count + 1 }
+      }
+      console.log(itm);
+      return itm;
+    })
+    setListItems(incCreaseUpdate)
+  }
+
+  const decreaseHandler = (uid: number) => {
+    const incCreaseUpdate = listItems.map(itm => {
+      if (itm.uniqId === uid && !itm.isChecked && itm.count > 0) {
+        console.log(itm.uniqId);
+        setTotalCartCount((pre) => pre - 1);
+        return { ...itm, count: itm.count - 1 }
+      }
+      // console.log(itm);
+      return itm;
+    })
+    setListItems(incCreaseUpdate)
+  }
+
   const removeItem = (ui: number) => {
-    console.log("remove item");
     const filteredItems = listItems.filter(item => item.uniqId !== ui)
     setListItems(filteredItems)
     const findingItem = listItems.find(i => i.uniqId === ui);
-    let removedCount = !findingItem?.count ? 0 : findingItem.count  ;
-
+    let removedCount = !findingItem?.count ? 0 : findingItem.count;
     setTotalCartCount(pre => pre - removedCount)
-    // console.log(removedCount);
 
   }
 
@@ -44,7 +73,8 @@ const Cart = ({ item, listItems, setListItems, setTotalCartCount }: TypeChildPro
         <input
           type="checkbox"
           id={item.itemName}
-          onClick={handleChange}
+          onChange={() => handleChange(item.uniqId)}
+          checked={item.isChecked}
         />
         <label htmlFor={item.itemName}>
           {item.itemName}
@@ -52,32 +82,17 @@ const Cart = ({ item, listItems, setListItems, setTotalCartCount }: TypeChildPro
       </div>
       <button onClick={() => removeItem(item.uniqId)}>x</button>
       <div className="cart-count">
-        <button disabled={item.isChecked}>
+        <button disabled={item?.isChecked}>
           <FaChevronLeft
             className="decrease"
-            onClick={() => {
-              if (item.count === 0) {
-                return;
-              }
-              if (item.isChecked) {
-                return;
-              }
-              item.count--;
-              setTotalCartCount((pre) => pre - 1);
-            }}
+            onClick={() => decreaseHandler(item.uniqId)}
           />
           <span className="cart-count-value">
             {item.count}
           </span>
           <FaChevronRight
             className="increase"
-            onClick={() => {
-              if (item.isChecked) {
-                return;
-              }
-              item.count++
-              setTotalCartCount((pre) => pre + 1);
-            }}
+            onClick={() => increaseHandler(item.uniqId)}
           />
         </button>
       </div>

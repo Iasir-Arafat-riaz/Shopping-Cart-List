@@ -80,3 +80,8 @@ color: #ED645C;
 .round input[type="checkbox"]{
  width: 50px;
 }
+.delete-button{
+  color: rgb(226, 212, 18);
+  font-size: 20px;
+  cursor: pointer;
+} 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import { FaChevronRight } from "react-icons/fa";
+import { AiFillDelete } from "react-icons/ai";
 import { TypeChildProps } from "../../../types/commonTypes";
 
 
@@ -63,7 +64,10 @@ const Cart = ({ item, listItems, setListItems, setTotalCartCount }: TypeChildPro
     setListItems(filteredItems)
     const findingItem = listItems.find(i => i.uniqId === ui);
     let removedCount = !findingItem?.count ? 0 : findingItem.count;
-    setTotalCartCount(pre => pre - removedCount)
+    
+    if(findingItem?.isChecked===false){
+      setTotalCartCount(pre => pre - removedCount)
+    }
 
   }
 
@@ -80,7 +84,7 @@ const Cart = ({ item, listItems, setListItems, setTotalCartCount }: TypeChildPro
           {item.itemName}
         </label>
       </div>
-      <button onClick={() => removeItem(item.uniqId)}>x</button>
+      <AiFillDelete className="delete-button" onClick={() => removeItem(item.uniqId)}/>
       <div className="cart-count">
         <button disabled={item?.isChecked}>
           <FaChevronLeft

@@ -16,12 +16,64 @@ const ShoppingList = () => {
     if (itemAdd.length === 0 || listItems.find(i => i.itemName === itemAdd)) {
       return alert("Your Order duplicate or empty!");
     }
-    setListItems([...listItems, { itemName: itemAdd, count: 0, isChecked: false, uniqId: Math.floor(Math.random() * 1000000) }]);
+    setListItems([...listItems, { itemName: itemAdd, count: 0, isChecked: false, uniqId: Math.floor(Math.random() * 10000000) }]);
     setItemAdd("");
   };
 
-  console.log("total count =", totalCartCount, "item add =", itemAdd);
-  console.log(listItems);
+  const handleChange = (id: number) => {
+
+    const updateCheckbox = listItems.map(itm => {
+
+      if (itm.uniqId === id) {
+        if (!itm.isChecked) {
+          // console.log(!itm.isChecked);
+          setTotalCartCount(pre => pre - itm.count)
+        }
+        else if (itm.isChecked) {
+          setTotalCartCount(pre => pre + itm.count)
+        }
+        // console.log(itm);
+        return { ...itm, isChecked: !itm.isChecked }
+
+      }
+      // console.log(itm);
+      return itm
+
+    })
+
+    setListItems(updateCheckbox)
+    console.log(updateCheckbox);
+
+  }
+
+  const increaseDecreaseHandler = (uid: number,method:string) => {
+    const incCreaseDecreseUpdate = listItems.map(itm => {
+      if (itm.uniqId === uid && !itm.isChecked && method==="increase") {
+        console.log(itm.uniqId);
+        setTotalCartCount((pre) => pre + 1);
+        return { ...itm, count: itm.count + 1 }
+      }
+      else if (itm.uniqId === uid && !itm.isChecked && itm.count > 0 && method ==="decrease") {
+        console.log(itm.uniqId);
+        setTotalCartCount((pre) => pre - 1);
+        return { ...itm, count: itm.count - 1 }
+      }
+      console.log(itm);
+      return itm;
+    })
+    setListItems(incCreaseDecreseUpdate)
+  }
+
+  const removeItem = (ui: number) => {
+    const filteredItems = listItems.filter(item => item.uniqId !== ui)
+    const findingItem = listItems.find(i => i.uniqId === ui);
+    // let removedCount = !findingItem?.count ? 0 : findingItem.count;
+    if(findingItem?.isChecked === false){
+      setTotalCartCount(pre => pre - findingItem.count)
+    }
+    setListItems(filteredItems)
+
+  }
 
   return (
     <div className="list-item">
@@ -50,9 +102,11 @@ const ShoppingList = () => {
         <Cart
           key={index}
           item={item}
-          setListItems={setListItems}
-          setTotalCartCount={setTotalCartCount}
-          listItems={listItems} />
+          handleChange={handleChange}
+          increaseDecreaseHandler={increaseDecreaseHandler}
+          removeItem={removeItem}
+          />
+          
       ))}
 
       <div className="total-cart">

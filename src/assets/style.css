@@ -28,6 +28,7 @@
   border-bottom: 1px solid gray;
   padding:10px 0;
   color: rgb(227, 230, 233);
+  position: relative;
 }
 .cart-count button{
   padding: 5px;
@@ -36,6 +37,7 @@
   display: flex;
   justify-content: space-between;
   width: 70px;
+ 
 }
 .total-cart{
   text-align: end;
@@ -74,6 +76,9 @@
 .decrease,.increase,.cart-count-value{
 color: #ED645C;
 }
+.increase,.decrease,.item-add-button,.item-number input{
+  cursor: pointer;
+}
 .item-number input[type="checkbox"]:checked + label {
   text-decoration: line-through;
 }
@@ -84,4 +89,6 @@ color: #ED645C;
   color: rgb(226, 212, 18);
   font-size: 20px;
   cursor: pointer;
+  position: absolute;
+  right: 100px;
 } 

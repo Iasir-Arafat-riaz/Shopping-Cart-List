@@ -26,19 +26,23 @@ const Cart = ({
       </div>
       <AiFillDelete className="delete-button" onClick={() => removeItem(item.uniqId)} />
       <div className="cart-count">
-        <button disabled={item?.isChecked}>
+      <div className={!item?.isChecked?"cart-count-enabled":"cart-count-disabled"}>
+        <button disabled={item?.isChecked} >
           <FaChevronLeft
-            className="decrease"
-            onClick={() => increaseDecreaseHandler(item.uniqId, "decrease")}
+            className="common"
+            onClick={() => !item.isChecked && increaseDecreaseHandler(item.uniqId, "decrease")}
           />
-          <span className="cart-count-value">
+          </button>
+          <span className="cart-count-value common">
             {item.count}
           </span>
+          <button disabled={item?.isChecked} >
           <FaChevronRight
-            className="increase"
-            onClick={() => increaseDecreaseHandler(item.uniqId, "increase")}
+            className="common"
+            onClick={() => !item.isChecked && increaseDecreaseHandler(item.uniqId, "increase")}
           />
         </button>
+      </div>
       </div>
     </div>
   );

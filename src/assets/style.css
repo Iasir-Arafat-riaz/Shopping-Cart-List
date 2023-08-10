@@ -30,14 +30,31 @@
   color: rgb(227, 230, 233);
   position: relative;
 }
-.cart-count button{
+.cart-count-enabled,.cart-count-disabled {
   padding: 5px;
   border: 0;
   border-radius: 10px;
   display: flex;
   justify-content: space-between;
   width: 70px;
+  
  
+}
+.cart-count-enabled,.cart-count-enabled button{
+  background-color: white;
+}
+.cart-count-enabled .common{
+  color: black;
+}
+.cart-count-disabled,.cart-count-disabled button{
+  background-color: rgb(148, 143, 143)
+}
+.cart-count-disabled .common{
+  color: rgba(17, 1, 1, 0.274);
+}
+.cart-count button{
+  border: 0;
+
 }
 .total-cart{
   text-align: end;
@@ -73,10 +90,10 @@
   font-size: 18px;
   color: #ED645C;
 }
-.decrease,.increase,.cart-count-value{
-color: #ED645C;
+.cart-count-value{
+  color: #ffffff;
 }
-.increase,.decrease,.item-add-button,.item-number input{
+.common,.item-add-button,.item-number input{
   cursor: pointer;
 }
 .item-number input[type="checkbox"]:checked + label {

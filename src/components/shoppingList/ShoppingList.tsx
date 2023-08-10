@@ -48,12 +48,12 @@ const ShoppingList = () => {
 
   const increaseDecreaseHandler = (uid: number,method:string) => {
     const incCreaseDecreseUpdate = listItems.map(itm => {
-      if (itm.uniqId === uid && !itm.isChecked && method==="increase") {
+      if (itm.uniqId === uid && method==="increase") {
         console.log(itm.uniqId);
         setTotalCartCount((pre) => pre + 1);
         return { ...itm, count: itm.count + 1 }
       }
-      else if (itm.uniqId === uid && !itm.isChecked && itm.count > 0 && method ==="decrease") {
+      else if (itm.uniqId === uid && itm.count > 0 && method ==="decrease") {
         console.log(itm.uniqId);
         setTotalCartCount((pre) => pre - 1);
         return { ...itm, count: itm.count - 1 }

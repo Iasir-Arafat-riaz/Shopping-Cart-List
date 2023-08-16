@@ -1,78 +1,85 @@
 import React, { useState } from "react";
 import Cart from "./parts/Cart";
 import { FaPlus } from "react-icons/fa";
-import { type } from "os";
-import { TypeItemAdd, TypeListItems, TypeTotalCount } from "../../types/commonTypes";
+import { TypeCartItemAdd, TypeCartItems, TypeTotalCount } from "../../types/commonTypes";
 
 const ShoppingList = () => {
 
-  const [listItems, setListItems] = useState<TypeListItems[]>([]);
+  const [cartsItem, setCartsItem] = useState<TypeCartItems[]>([]);
   const [totalCartCount, setTotalCartCount] = useState<TypeTotalCount>(0);
-  const [itemAdd, setItemAdd] = useState<TypeItemAdd>("");
+  const [cartItemAdd, setCartItemAdd] = useState<TypeCartItemAdd>("");
 
 
   const itemCartAdd = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (itemAdd.length === 0 || listItems.find(i => i.itemName === itemAdd)) {
+
+    if (cartItemAdd.length === 0 || cartsItem.find(i => i.itemName === cartItemAdd)) {
       return alert("Your Order duplicate or empty!");
     }
-    setListItems([...listItems, { itemName: itemAdd, count: 0, isChecked: false, uniqId: Math.floor(Math.random() * 10000000) }]);
-    setItemAdd("");
+
+    setCartsItem([...cartsItem, { itemName: cartItemAdd, count: 0, isChecked: false, uniqId: Math.floor(Math.random() * 10000000) }]);
+    setCartItemAdd("");
   };
 
-  const handleChange = (id: number) => {
+  const checkboxHandleChange = (id: number) => {
 
-    const updateCheckbox = listItems.map(itm => {
+    const updateCheckbox = cartsItem.map(itm => {
 
       if (itm.uniqId === id) {
+
         if (!itm.isChecked) {
           // console.log(!itm.isChecked);
           setTotalCartCount(pre => pre - itm.count)
         }
+
         else if (itm.isChecked) {
           setTotalCartCount(pre => pre + itm.count)
         }
-        // console.log(itm);
+
         return { ...itm, isChecked: !itm.isChecked }
-
       }
-      // console.log(itm);
-      return itm
 
+      return itm
     })
 
-    setListItems(updateCheckbox)
+    setCartsItem(updateCheckbox)
+
     console.log(updateCheckbox);
 
   }
 
-  const increaseDecreaseHandler = (uid: number,method:string) => {
-    const incCreaseDecreseUpdate = listItems.map(itm => {
-      if (itm.uniqId === uid && method==="increase") {
+  const increaseDecreaseButtonHandler = (uid: number, method: string) => {
+    const incCreaseDecreseUpdate = cartsItem.map(itm => {
+
+      if (itm.uniqId === uid && method === "increase") {
         console.log(itm.uniqId);
         setTotalCartCount((pre) => pre + 1);
         return { ...itm, count: itm.count + 1 }
       }
-      else if (itm.uniqId === uid && itm.count > 0 && method ==="decrease") {
+
+      else if (itm.uniqId === uid && itm.count > 0 && method === "decrease") {
         console.log(itm.uniqId);
         setTotalCartCount((pre) => pre - 1);
         return { ...itm, count: itm.count - 1 }
       }
+
       console.log(itm);
+
       return itm;
     })
-    setListItems(incCreaseDecreseUpdate)
+    setCartsItem(incCreaseDecreseUpdate)
   }
 
-  const removeItem = (ui: number) => {
-    const filteredItems = listItems.filter(item => item.uniqId !== ui)
-    const findingItem = listItems.find(i => i.uniqId === ui);
+  const cartItemRemove = (ui: number) => {
+    const filteredItems = cartsItem.filter(item => item.uniqId !== ui)
+    const findingItem = cartsItem.find(i => i.uniqId === ui);
     // let removedCount = !findingItem?.count ? 0 : findingItem.count;
-    if(findingItem?.isChecked === false){
+
+    if (findingItem?.isChecked === false) {
       setTotalCartCount(pre => pre - findingItem.count)
     }
-    setListItems(filteredItems)
 
+    setCartsItem(filteredItems)
   }
 
   return (
@@ -87,8 +94,8 @@ const ShoppingList = () => {
           name=""
           id=""
           placeholder="Add an item..."
-          onChange={(e) => setItemAdd(e.target.value)}
-          value={itemAdd}
+          onChange={(e) => setCartItemAdd(e.target.value)}
+          value={cartItemAdd}
         />
         <button
           type="submit"
@@ -98,15 +105,15 @@ const ShoppingList = () => {
         </button>
       </form>
 
-      {listItems.map((item, index) => (
+      {cartsItem.map((item, index) => (
         <Cart
           key={index}
           item={item}
-          handleChange={handleChange}
-          increaseDecreaseHandler={increaseDecreaseHandler}
-          removeItem={removeItem}
-          />
-          
+          checkboxHandleChange={checkboxHandleChange}
+          increaseDecreaseButtonHandler={increaseDecreaseButtonHandler}
+          cartItemRemove={cartItemRemove}
+        />
+
       ))}
 
       <div className="total-cart">

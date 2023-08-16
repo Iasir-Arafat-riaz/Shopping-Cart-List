@@ -1,12 +1,22 @@
-import React, { useEffect, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import { FaChevronRight } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
-import { TypeChildProps } from "../../../types/commonTypes";
+import {
+  // METHOD,
+  TypeCartItem
+} from "../../../types/commonTypes";
+
+export type TypeChildProps = {
+  item: TypeCartItem,
+  handleCheckboxChange: (value: number) => void,
+  increaseDecreaseButtonHandler: (id: number, method: "increase" | "decrease") => void,
+  // increaseDecreaseButtonHandler: (id: number, method: METHOD) => void,
+  cartItemRemove: (value: number) => void;
+}
 
 const Cart = ({
   item,
-  checkboxHandleChange,
+  handleCheckboxChange: checkboxHandleChange,
   increaseDecreaseButtonHandler,
   cartItemRemove
 }: TypeChildProps

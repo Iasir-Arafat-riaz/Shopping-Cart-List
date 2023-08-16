@@ -1,91 +1,114 @@
 import React, { useState } from "react";
 import Cart from "./parts/Cart";
 import { FaPlus } from "react-icons/fa";
-import { TypeCartItemAdd, TypeCartItems, TypeTotalCount } from "../../types/commonTypes";
+import { TypeCartItem } from "../../types/commonTypes";
 
 const ShoppingList = () => {
 
-  const [cartsItem, setCartsItem] = useState<TypeCartItems[]>([]);
-  const [totalCartCount, setTotalCartCount] = useState<TypeTotalCount>(0);
-  const [cartItemAdd, setCartItemAdd] = useState<TypeCartItemAdd>("");
+  const [cartItems, setCartItems] = useState<TypeCartItem[]>([]);
+  const [totalCartCount, setTotalCartCount] = useState<number>(0);
+  const [newCartItemName, setNewCartItemName] = useState<string>("");
 
 
-  const itemCartAdd = (e: React.FormEvent<HTMLFormElement>) => {
+  const addCardItem = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (cartItemAdd.length === 0 || cartsItem.find(i => i.itemName === cartItemAdd)) {
-      return alert("Your Order duplicate or empty!");
+    if (!newCartItemName.length || cartItems.find(x => x.itemName === newCartItemName)) {
+      return alert("Your item is duplicate or empty!");
     }
 
-    setCartsItem([...cartsItem, { itemName: cartItemAdd, count: 0, isChecked: false, uniqId: Math.floor(Math.random() * 10000000) }]);
-    setCartItemAdd("");
+    setCartItems([
+      ...cartItems,
+      {
+        itemName: newCartItemName,
+        count: 0,
+        isChecked: false,
+        uniqId: Math.floor(Math.random() * 10000000)
+      }
+    ]);
+    setNewCartItemName("");
   };
 
-  const checkboxHandleChange = (id: number) => {
+  const handleCheckboxChange = (id: number) => {
 
-    const updateCheckbox = cartsItem.map(itm => {
+    const updatedCartItems = [...cartItems];
+    const updatedCartItem = updatedCartItems.find(x => x.uniqId === id);
 
-      if (itm.uniqId === id) {
+    if (updatedCartItem) {
 
-        if (!itm.isChecked) {
-          // console.log(!itm.isChecked);
-          setTotalCartCount(pre => pre - itm.count)
-        }
-
-        else if (itm.isChecked) {
-          setTotalCartCount(pre => pre + itm.count)
-        }
-
-        return { ...itm, isChecked: !itm.isChecked }
+      if (updatedCartItem.isChecked) {
+        setTotalCartCount(x => x + updatedCartItem.count);
+      } else {
+        setTotalCartCount(x => x - updatedCartItem.count);
       }
 
-      return itm
-    })
-
-    setCartsItem(updateCheckbox)
-
-    console.log(updateCheckbox);
-
-  }
-
-  const increaseDecreaseButtonHandler = (uid: number, method: string) => {
-    const incCreaseDecreseUpdate = cartsItem.map(itm => {
-
-      if (itm.uniqId === uid && method === "increase") {
-        console.log(itm.uniqId);
-        setTotalCartCount((pre) => pre + 1);
-        return { ...itm, count: itm.count + 1 }
-      }
-
-      else if (itm.uniqId === uid && itm.count > 0 && method === "decrease") {
-        console.log(itm.uniqId);
-        setTotalCartCount((pre) => pre - 1);
-        return { ...itm, count: itm.count - 1 }
-      }
-
-      console.log(itm);
-
-      return itm;
-    })
-    setCartsItem(incCreaseDecreseUpdate)
-  }
-
-  const cartItemRemove = (ui: number) => {
-    const filteredItems = cartsItem.filter(item => item.uniqId !== ui)
-    const findingItem = cartsItem.find(i => i.uniqId === ui);
-    // let removedCount = !findingItem?.count ? 0 : findingItem.count;
-
-    if (findingItem?.isChecked === false) {
-      setTotalCartCount(pre => pre - findingItem.count)
+      updatedCartItem.isChecked = !updatedCartItem.isChecked;
     }
 
-    setCartsItem(filteredItems)
+    // const updatedCartItems = [...cartItems].map(item => {
+
+    //   if (item.uniqId === id) {
+
+    //     if (!item.isChecked) {
+    //       // console.log(!itm.isChecked);
+    //       setTotalCartCount(x => x - item.count);
+    //     }
+
+    //     else if (item.isChecked) {
+    //       setTotalCartCount(x => x + item.count);
+    //     }
+
+    //     return {
+    //       ...item,
+    //       isChecked: !item.isChecked
+    //     };
+    //   }
+
+    //   return item;
+    // })
+
+    console.log(updatedCartItems);
+
+    setCartItems(updatedCartItems);
+  }
+
+  const increaseDecreaseButtonHandler = (id: number, method: "increase" | "decrease") => {
+
+    const updatedCartItems = [...cartItems];
+    const updatedCartItem = updatedCartItems.find(item => item.uniqId === id);
+
+    if (method === "increase" && updatedCartItem) {
+      updatedCartItem.count++;
+      setTotalCartCount(x => x + 1);
+    }
+
+    if (method === "decrease" && updatedCartItem && updatedCartItem.count > 0) {
+      updatedCartItem.count--;
+      setTotalCartCount(x => x - 1);
+    }
+
+    setCartItems(updatedCartItems);
+  }
+
+  const cartItemRemove = (id: number) => {
+    const updatedCartItems = [...cartItems];
+    const findObjIndex = updatedCartItems.findIndex(x => x.uniqId === id)
+    const removeCartItem = updatedCartItems.splice(findObjIndex, 1);
+   
+    console.log("removeItem = ", removeCartItem[0], "index = ", findObjIndex);
+
+    if (removeCartItem[0] && !removeCartItem[0].isChecked) {
+      setTotalCartCount(x => x - removeCartItem[0].count);
+      console.log("decrease from total count");
+    }
+
+    setCartItems(updatedCartItems);
   }
 
   return (
     <div className="list-item">
       <form
-        onSubmit={itemCartAdd}
+        onSubmit={addCardItem}
         action=""
         className="add-item-field"
       >
@@ -94,8 +117,8 @@ const ShoppingList = () => {
           name=""
           id=""
           placeholder="Add an item..."
-          onChange={(e) => setCartItemAdd(e.target.value)}
-          value={cartItemAdd}
+          onChange={(e) => setNewCartItemName(e.target.value)}
+          value={newCartItemName}
         />
         <button
           type="submit"
@@ -105,11 +128,11 @@ const ShoppingList = () => {
         </button>
       </form>
 
-      {cartsItem.map((item, index) => (
+      {cartItems.map((item, index) => (
         <Cart
           key={index}
           item={item}
-          checkboxHandleChange={checkboxHandleChange}
+          handleCheckboxChange={handleCheckboxChange}
           increaseDecreaseButtonHandler={increaseDecreaseButtonHandler}
           cartItemRemove={cartItemRemove}
         />

@@ -1,11 +1,11 @@
 import ShoppingList from "./components/shoppingList/ShoppingList";
+
 import "./assets/style.css"
 
-
-function App() {
+const App = () => {
   return (
     <div className="shopping-list">
-    <ShoppingList/>
+      <ShoppingList />
     </div>
   );
 }
